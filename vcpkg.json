@@ -1,0 +1,14 @@
+{
+    "name":  "death_freedom_camera",
+    "version-string":  "1.0.0",
+    "description":  "A Skse Plugin",
+    "license":  "MIT",
+    "dependencies":  [
+                         "spdlog"
+                     ],
+    "features":  {
+                     "mo2-install":  {
+                                         "description":  "Death Freedom Camera"
+                                     }
+                 }
+}
