@@ -21,7 +21,7 @@ namespace
 
 	// 自由相机模式下，自定义移动的基础速度（每帧位移量）。
 	// 原 0.03F / 帧 ≈ 1.8 单位/秒（≈ 1.3 m/s），太慢；改为 0.10F 后约 4.2 m/s。
-	inline constexpr float kMoveSpeed = 0.50F;
+	inline constexpr float kMoveSpeed = 2.00F;
 	// 鼠标灵敏度：每像素 → 弧度
 	inline constexpr float kMouseSensitivity = 0.005F;
 	// pitch 限位。
