@@ -1,5 +1,7 @@
 # Death Freedom Camera
 
+**[English](README.md)** | **简体中文**
+
 一个用于 **Skyrim Special Edition 1.5.x** 和 **Skyrim Anniversary Edition 1.6.x** 的 SKSE 插件。功能：在玩家死亡状态下，通过拦截控制台命令 `tfc`（Toggle Free Camera）实现自由视角移动。
 
 构建时使用 **FLATRIM preset**，输出一个**同时支持 SE 和 AE** 的单一二进制（运行时按 `REL::Module::IsAE()` 自动选择偏移表）。

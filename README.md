@@ -1,5 +1,7 @@
 # Death Freedom Camera
 
+**English** | **[简体中文](README.cn.md)**
+
 A SKSE plugin for **Skyrim Special Edition 1.5.x** and **Skyrim Anniversary Edition 1.6.x** that allows free-camera movement after the player dies, by intercepting the `tfc` (Toggle Free Camera) console command in the death state.
 
 A single FLATRIM binary is produced at build time and is loaded by both SE and AE at runtime.
