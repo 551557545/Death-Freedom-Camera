@@ -1,0 +1,1 @@
+# **A skse plugin for skyrim SE/AE**
