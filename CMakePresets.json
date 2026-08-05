@@ -10,8 +10,9 @@
 			"name": "common",
 			"hidden": true,
 			"cacheVariables": {
-				"SKSE_SUPPORT_XBYAK": "ON",
-				"SKSEPluginAuthor": "$env{SKSEPluginAuthor}"
+			"SKSE_SUPPORT_XBYAK": "ON",
+			"SKSEPluginAuthor": "$env{SKSEPluginAuthor}",
+			"SKSEPluginSupportEmail": "$env{SKSEPluginSupportEmail}"
 			}
 		},
 		{

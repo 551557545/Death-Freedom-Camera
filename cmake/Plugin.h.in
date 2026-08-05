@@ -5,6 +5,7 @@ namespace Plugin
 {
 	inline constexpr auto NAME = "@PROJECT_NAME@"sv;
 	inline constexpr auto AUTHOR = "@SKSEPluginAuthor@"sv;
+	inline constexpr auto SUPPORT = "@SKSEPluginSupportEmail@"sv;
 	inline constexpr REL::Version Version
 	{
 		@PROJECT_VERSION_MAJOR@u,
@@ -21,6 +22,7 @@ DLLEXPORT constinit auto SKSEPlugin_Version = []() noexcept
 	data.PluginVersion(Plugin::Version);
 	data.PluginName(Plugin::NAME);
 	data.AuthorName(Plugin::AUTHOR);
+	data.AuthorEmail(Plugin::SUPPORT);
 	data.UsesAddressLibrary(true);
 	data.HasNoStructUse(true);
 
