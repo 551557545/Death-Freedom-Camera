@@ -297,6 +297,15 @@ namespace
 				cam->SetState(cam->cameraStates[CameraState::kBleedout].get());
 			} else {
 				g_deathTfcActive = true;
+				// 把 FreeCameraState 重置到玩家当前位置。
+				//   FreeCameraState 是 PlayerCamera::cameraStates[kFree] 持有的全局单例，
+				//   每次 tfc 切换都复用同一个对象；translation / rotation 会保留上次
+				//   tfc 留下的值，所以这里在切到 Free 之前显式重置。
+				if (auto* freeState = static_cast<FreeCameraState*>(cam->cameraStates[CameraState::kFree].get())) {
+					freeState->translation = player->GetPosition();
+					freeState->rotation.y  = player->GetAngleZ();
+					freeState->rotation.x  = 0.0F;  // 水平视角起步
+				}
 				cam->SetState(cam->cameraStates[CameraState::kFree].get());
 			}
 			a_result = 1.0;
