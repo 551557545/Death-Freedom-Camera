@@ -1,11 +1,12 @@
 ﻿#include "FreeCameraMover.h"
+#include "PluginLogger.h"
 #include <SKSE/SKSE.h>
 #include <spdlog/spdlog.h>  // CLS内置的日志库
 
-DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
+DLLEXPORT bool SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
 {
 	SKSE::Init(a_skse);
-	DKUtil::Logger::Init(Plugin::NAME, REL::Module::get().version().string());
+	PluginLogger::Setup();
 
 	const SKSE::PluginDeclaration* plugin = SKSE::PluginDeclaration::GetSingleton();
 	const auto pluginName    = plugin->GetName();

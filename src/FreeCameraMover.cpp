@@ -213,7 +213,7 @@ namespace
 		//   1) 强制把 a_nextState 改回 Free（避免下一帧跳到 Bleedout），
 		//   2) 总是施加自定义移动和鼠标视角（因为原版不做事）。
 		if (cam && player && player->IsDead(false) && g_deathTfcActive) {
-			a_nextState = cam->cameraStates[CameraState::kFree];
+			a_nextState = cam->GetRuntimeData().cameraStates[CameraState::kFree];
 			UpdatePosition(a_this);
 			UpdateMouseRotation(a_this);
 			return;
@@ -236,7 +236,7 @@ namespace
 	{
 		if (ShouldOverrideDeathCamera()) {
 			auto* cam = PlayerCamera::GetSingleton();
-			a_nextState = cam->cameraStates[CameraState::kFree];
+			a_nextState = cam->GetRuntimeData().cameraStates[CameraState::kFree];
 			return;
 		}
 		g_originalBleedoutUpdate(a_this, a_nextState);
@@ -251,12 +251,12 @@ namespace
 		auto* cam    = PlayerCamera::GetSingleton();
 		auto* player = PlayerCharacter::GetSingleton();
 		if (a_state && cam && player) {
-			const auto* bleedoutState = cam->cameraStates[CameraState::kBleedout].get();
+			const auto* bleedoutState = cam->GetRuntimeData().cameraStates[CameraState::kBleedout].get();
 
 			if (player->IsDead(false)) {
 				if (a_state == bleedoutState && g_deathTfcActive) {
 					// 死亡劫持中：拒绝切到 Bleedout，改切到 Free
-					g_originalSetState(a_camera, const_cast<TESCameraState*>(cam->cameraStates[CameraState::kFree].get()));
+					g_originalSetState(a_camera, const_cast<TESCameraState*>(cam->GetRuntimeData().cameraStates[CameraState::kFree].get()));
 					return;
 				}
 			} else {
@@ -294,19 +294,19 @@ namespace
 			//   劫持已激活 → 切回 Bleedout 相机，关闭劫持。
 			if (g_deathTfcActive) {
 				g_deathTfcActive = false;
-				cam->SetState(cam->cameraStates[CameraState::kBleedout].get());
+				cam->SetState(cam->GetRuntimeData().cameraStates[CameraState::kBleedout].get());
 			} else {
 				g_deathTfcActive = true;
 				// 把 FreeCameraState 重置到玩家当前位置。
 				//   FreeCameraState 是 PlayerCamera::cameraStates[kFree] 持有的全局单例，
 				//   每次 tfc 切换都复用同一个对象；translation / rotation 会保留上次
 				//   tfc 留下的值，所以这里在切到 Free 之前显式重置。
-				if (auto* freeState = static_cast<FreeCameraState*>(cam->cameraStates[CameraState::kFree].get())) {
+				if (auto* freeState = static_cast<FreeCameraState*>(cam->GetRuntimeData().cameraStates[CameraState::kFree].get())) {
 					freeState->translation = player->GetPosition();
 					freeState->rotation.y  = player->GetAngleZ();
 					freeState->rotation.x  = 0.0F;  // 水平视角起步
 				}
-				cam->SetState(cam->cameraStates[CameraState::kFree].get());
+				cam->SetState(cam->GetRuntimeData().cameraStates[CameraState::kFree].get());
 			}
 			a_result = 1.0;
 			return true;
@@ -344,7 +344,7 @@ namespace
 		// 在入口处插入一个 5 字节的 CALL 跳转到 HookSetState。
 		// write_call 返回的是 trampoline 跳板（5 字节之后的继续执行入口），
 		// 我们把它保存为「原函数」，以便 HookSetState 末尾调用以继续原逻辑。
-		REL::Relocation<SetState_t> setState{ Offset::TESCamera::SetState };
+		REL::Relocation<SetState_t> setState{ REL::RelocationID(32290, 33026) };  // TESCamera::SetState
 
 		auto& trampoline = SKSE::GetTrampoline();
 		g_originalSetState = trampoline.write_call<5>(
